@@ -1,0 +1,63 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default-deny global safety net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    match /users/{userId} {
+      allow get, list: if isOwner(userId);
+      allow create: if isOwner(userId) && incoming().userId == userId;
+      allow update: if isOwner(userId) && incoming().userId == userId;
+      allow delete: if isOwner(userId);
+
+      match /subjects/{subjectId} {
+        allow get, list: if isOwner(userId);
+        allow create: if isOwner(userId) && incoming().userId == userId;
+        allow update: if isOwner(userId) && incoming().userId == userId;
+        allow delete: if isOwner(userId);
+      }
+
+      match /tasks/{taskId} {
+        allow get, list: if isOwner(userId);
+        allow create: if isOwner(userId) && incoming().userId == userId;
+        allow update: if isOwner(userId) && incoming().userId == userId;
+        allow delete: if isOwner(userId);
+      }
+
+      match /exams/{examId} {
+        allow get, list: if isOwner(userId);
+        allow create: if isOwner(userId) && incoming().userId == userId;
+        allow update: if isOwner(userId) && incoming().userId == userId;
+        allow delete: if isOwner(userId);
+      }
+
+      match /focus_sessions/{sessionId} {
+        allow get, list: if isOwner(userId);
+        allow create: if isOwner(userId) && incoming().userId == userId;
+        allow update: if isOwner(userId) && incoming().userId == userId;
+        allow delete: if isOwner(userId);
+      }
+
+      match /chat_messages/{messageId} {
+        allow get, list: if isOwner(userId);
+        allow create: if isOwner(userId) && incoming().userId == userId;
+        allow update: if isOwner(userId) && incoming().userId == userId;
+        allow delete: if isOwner(userId);
+      }
+    }
+  }
+}

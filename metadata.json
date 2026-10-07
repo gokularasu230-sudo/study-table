@@ -1,0 +1,6 @@
+{
+  "name": "StudyFlow AI",
+  "description": "AI-powered college student productivity operating system: smart planner, task manager, Pomodoro focus timer, exam prep mode, and study companion.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

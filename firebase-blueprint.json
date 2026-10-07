@@ -1,0 +1,137 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile with study preferences, gamification stats, and progress",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "displayName": { "type": "string" },
+        "email": { "type": "string" },
+        "collegeYear": { "type": "string" },
+        "goals": { "type": "array" },
+        "preferredStudyHours": { "type": "string" },
+        "streakDays": { "type": "integer" },
+        "lastActiveDate": { "type": "string" },
+        "xp": { "type": "integer" },
+        "level": { "type": "integer" },
+        "levelTitle": { "type": "string" },
+        "totalFocusMinutes": { "type": "integer" },
+        "tasksCompleted": { "type": "integer" },
+        "isOnboarded": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "displayName", "createdAt"]
+    },
+    "Subject": {
+      "title": "Subject",
+      "description": "Academic course or subject",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "name": { "type": "string" },
+        "code": { "type": "string" },
+        "colorHex": { "type": "string" },
+        "targetGrade": { "type": "string" },
+        "creditHours": { "type": "integer" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "name", "createdAt"]
+    },
+    "Task": {
+      "title": "Task",
+      "description": "Study task, assignment, or scheduled study block",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "subjectName": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "priority": { "type": "string" },
+        "deadline": { "type": "string" },
+        "estimatedMinutes": { "type": "integer" },
+        "isCompleted": { "type": "boolean" },
+        "scheduledDate": { "type": "string" },
+        "scheduledTime": { "type": "string" },
+        "isAIGenerated": { "type": "boolean" },
+        "subtasks": { "type": "array" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "title", "createdAt"]
+    },
+    "Exam": {
+      "title": "Exam",
+      "description": "Exam preparation with topics, target date, and AI study plan",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "subjectName": { "type": "string" },
+        "examDate": { "type": "string" },
+        "topics": { "type": "string" },
+        "confidenceLevel": { "type": "string" },
+        "aiStudyPlan": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "subjectName", "examDate", "createdAt"]
+    },
+    "FocusSession": {
+      "title": "FocusSession",
+      "description": "Completed Pomodoro or focus study session",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "taskTitle": { "type": "string" },
+        "durationMinutes": { "type": "integer" },
+        "xpEarned": { "type": "integer" },
+        "completedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "durationMinutes", "xpEarned", "completedAt"]
+    },
+    "ChatMessage": {
+      "title": "ChatMessage",
+      "description": "Message in the AI assistant conversation history",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "role": { "type": "string" },
+        "content": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "role", "content", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "User profile with level, streaks, and preferences"
+    },
+    "/users/{userId}/subjects/{subjectId}": {
+      "schema": { "$ref": "#/entities/Subject" },
+      "description": "Academic subjects entered by the student"
+    },
+    "/users/{userId}/tasks/{taskId}": {
+      "schema": { "$ref": "#/entities/Task" },
+      "description": "Student planner tasks and assignments"
+    },
+    "/users/{userId}/exams/{examId}": {
+      "schema": { "$ref": "#/entities/Exam" },
+      "description": "Upcoming exams with countdowns and revision plans"
+    },
+    "/users/{userId}/focus_sessions/{sessionId}": {
+      "schema": { "$ref": "#/entities/FocusSession" },
+      "description": "Logged focus time sessions"
+    },
+    "/users/{userId}/chat_messages/{messageId}": {
+      "schema": { "$ref": "#/entities/ChatMessage" },
+      "description": "Conversations with StudyFlow AI"
+    }
+  }
+}
